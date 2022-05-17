@@ -36,9 +36,8 @@ initial begin
         $dumpvars(1, inX[i], inY[i], tempX[i], tempY[i], count[i]);
 end
 
-always@(posedge clk or posedge reset)
-begin
-    if (reset) begin
+always@(posedge clk or posedge reset) begin
+    if (reset) begin    // 初始化
         state <= 1;
         for (i = 0; i < `length; i = i + 1) begin
             inX[i] <= 0;
@@ -68,7 +67,8 @@ begin
                 kx <= 0;
             end
             4'd1:begin      // receive input state
-                if (ix == `length) state <= 2;
+                if (ix == `length)
+                    state <= 2;
                 else if (give_valid) begin
                     inX[ix] <= dataX;
                     inY[ix] <= dataY;
