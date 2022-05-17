@@ -30,28 +30,21 @@ initial begin
         $dumpvars(1, inX[i], inY[i], tempX[i], tempY[i], count[i]);
 end
 
-always@(posedge clk or posedge reset)
-begin
-    if(reset)
-    begin
-        for (i = 0; i < `length; i = i + 1)
-        begin
+always@(posedge clk or posedge reset) begin
+    if(reset) begin
+        for (i = 0; i < `length; i = i + 1) begin
             inX[i] <= 0;
             inY[i] <= 0;
         end
-    end
-    else if(give_valid)
-    begin
+    end else if(give_valid) begin
         inX[ix] <= dataX;
         inY[ix] <= dataY;
         ix <= ix + 1;
     end
 end
 
-always@(posedge clk or posedge reset)
-begin
-    if(reset)
-    begin
+always@(posedge clk or posedge reset) begin
+    if(reset) begin
         out_valid <= 0;
     end
 end
