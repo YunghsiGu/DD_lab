@@ -15,7 +15,7 @@ module lab8(input clk,
             output reg [7:0]ansY,
             output reg out_valid);
 
-integer i, j;
+integer i;
 reg [7:0]inX[0:`length - 1];
 reg [7:0]inY[0:`length - 1];
 reg [7:0]negcount[0:`length - 1];
@@ -98,18 +98,12 @@ always@(posedge clk or posedge reset) begin
                         kx <= kx + 1;
                     jx <= 0;
                 end else
-                    jx <= jx+1;
+                    jx <= jx + 1;
 
                 if ((tempX[kx] * tempY[jx] - tempX[jx] * tempY[kx]) < 0)
                     negcount[kx] <= negcount[kx] + 1;
             end
             4'd4:begin      // sort the position of vectors
-                for (i = 0; i < `length; i = i + 1) begin
-                    for (j = 0; j < `length - i; j = j + 1) begin
-                        if (我好懶)
-                            我就會亂寫code;
-                    end
-                end
                 
 
             end
