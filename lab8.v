@@ -53,7 +53,7 @@ always@(posedge clk or posedge reset) begin
     end else begin
         case (state)
             4'd0:begin      // initial state
-                state <= 1;
+                state <= 1; // 下一個 state 是 1
                 for (i = 0; i < `length; i = i + 1) begin
                     inX[i] <= 0;
                     inY[i] <= 0;
@@ -91,10 +91,12 @@ always@(posedge clk or posedge reset) begin
                 tempY[0] <= inY[0] - inY[0];
             end
             4'd3:begin      // compare each vector
-                if (jx == `length-1) begin
-                    if(kx == `length-1) state <= 4;
-                    else                kx <= kx+1;
-                    jx<=0;
+                if (jx == `length - 1) begin
+                    if (kx == `length - 1) 
+                        state <= 4;
+                    else                
+                        kx <= kx+1;
+                    jx <= 0;
                 end else
                     jx <= jx+1;
 
