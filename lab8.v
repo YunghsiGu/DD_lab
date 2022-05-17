@@ -52,7 +52,7 @@ always@(posedge clk or negedge reset) begin
         ix <= ix + 1;
     end
     else if (give_valid) begin
-        tempX[ix] <= inX[ix] - inX[0];
+        tempX[ix] <= inX[ix] - inX[0];  //好像不行這樣?因為上面的always有用到inX[ix]跟inY[ix]
         tempX[ix] <= inY[ix] - inY[0];
         ix <= ix + 1;
     end
