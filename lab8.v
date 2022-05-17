@@ -21,7 +21,7 @@ reg [7:0]inY[0:`length-1];
 reg signed [7:0]tempX[0:`length-1];
 reg signed [7:0]tempY[0:`length-1];
 
-reg [7:0]ix;
+reg [7:0]ix = 8'b0;
 
 initial begin
     $dumpfile("Lab.vcd");
@@ -30,6 +30,7 @@ initial begin
         $dumpvars(1, inX[i], inY[i], tempX[i], tempY[i], count[i]);
 end
 
+// 輸入六個點
 always@(posedge clk or negedge reset) begin
     if (!reset) begin
         for (i = 0; i < `length; i = i + 1) begin
@@ -39,6 +40,20 @@ always@(posedge clk or negedge reset) begin
     end else if (give_valid) begin
         inX[ix] <= dataX;
         inY[ix] <= dataY;
+        ix <= ix + 1;
+    end
+end
+
+// 建立向量
+always@(posedge clk or negedge reset) begin
+    if (!reset) begin
+        // 等待輸入?
+    end else if (ix == 0) begin
+        ix <= ix + 1;
+    end
+    else if (give_valid) begin
+        tempX[ix] <= inX[ix] - inX[0];
+        tempX[ix] <= inY[ix] - inY[0];
         ix <= ix + 1;
     end
 end
