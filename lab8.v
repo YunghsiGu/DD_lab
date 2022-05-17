@@ -18,14 +18,14 @@ module lab8(input clk,
 integer i;
 reg [7:0]inX[0:`length-1];          // store input
 reg [7:0]inY[0:`length-1];
-reg [7:0]negcount[0:`length-1];     //大概是逆時針方向的接收器?
+reg [7:0]negcount[0:`length-1];     // 順時針方向有幾個人
 reg signed [7:0]tempX[0:`length-1]; // store output
 reg signed [7:0]tempY[0:`length-1];
 
 reg [3:0]count[0:`length - 1];
 
 reg [3:0]state;
-reg [7:0]ix;
+reg [7:0]ix;                        //紀錄輸第幾筆資料
 reg [7:0]jx;
 reg [7:0]kx;
 
@@ -46,14 +46,15 @@ always@(posedge clk or posedge reset) begin
             tempX[i] <= 0;
             tempY[i] <= 0;
             count[i] <= i;
-            negcount[i] <= 0;
+            negcount[i] <= 0;   //順時針有幾個人
         end
-        ix <= 0;    //紀錄輸第幾筆資料
+        ix <= 0;    
         jx <= 0;
         kx <= 0;
     end else begin
         case (state)
             4'd0:begin      // initial state
+                out_valid <= 0;
                 state <= 1;
                 for (i = 0; i < `length; i = i + 1) begin
                     inX[i] <= 0;
@@ -68,6 +69,7 @@ always@(posedge clk or posedge reset) begin
                 kx <= 0;
             end
             4'd1:begin      // receive input state
+                out_valid <= 0;
                 if (ix == `length)      //已經輸6筆座標
                     state <= 2;
                 else if (give_valid) begin
@@ -77,6 +79,7 @@ always@(posedge clk or posedge reset) begin
                 end
             end
             4'd2:begin      // calculate vector from inputs
+                out_valid <= 0;
                 state <= 3;
                 tempX[5] <= inX[5] - inX[0];
                 tempY[5] <= inY[5] - inY[0];
@@ -91,42 +94,59 @@ always@(posedge clk or posedge reset) begin
                 tempX[0] <= inX[0] - inX[0];
                 tempY[0] <= inY[0] - inY[0];
             end
-            4'd3:begin      // compare each vector
-                if (jx == `length-1) begin      
-                    if(kx == `length-1) state <= 4;
+            4'd3:begin      // S3_compare each vector
+                out_valid <= 0; 
+                if (jx == `length-1) begin      //比到第5個接收器 
+                    if(kx == `length-1) state <= 4; 
                     else                kx <= kx+1;
                     jx <= 0;
                 end else
-                    jx <= jx+1;
+                    jx <= jx+1;         
 
-                if ((tempX[kx] * tempY[jx] - tempX[jx] * tempY[kx]) < 0)//表示jx位於kx的順時針方向---jx/kx
-                    negcount[kx] <= negcount[kx] + 1;                   //
+                if ((tempX[kx] * tempY[jx] - tempX[jx] * tempY[kx]) < 0)
+                    negcount[kx] <= negcount[kx] + 1;                   
             end
-            4'd4:begin      // sort the position of vectors(bubble sort)
-                
-
+            4'd4:begin      // S4_sort the position of vectors(bubble sort)
+                out_valid <= 0;
+                state <= 5;
+                for (i = 0; i < `length - 1; i = i + 1) begin   //swap
+                    tempX[i] <= (negcount[i] > negcount[i + 1]) ? tempX[i + 1] : tempX[i];
+                    tempX[i + 1] <= (negcount[i] > negcount[i + 1]) ? tempX[i] : tempX[i + 1];
+                    tempY[i] <= (negcount[i] > negcount[i + 1]) ? tempY[i + 1] : tempY[i];
+                    tempY[i + 1] <= (negcount[i] > negcount[i + 1]) ? tempY[i] : tempY[i + 1];
+                end
             end
             /*每次輸出結果後，將 out_valid 再復歸為 low*/
             4'd5:begin      // output answer and back to initial state
-            //只有先寫back to initial state
-                state <= 1;
-                for (i = 0; i < `length; i = i + 1)
-                begin
+                out_valid <= 1;
+                if (i == `length)      
+                    state <= 1;
+                else if (out_valid) begin
                     inX[i] <= 0;
                     inY[i] <= 0;
                     tempX[i] <= 0;
                     tempY[i] <= 0;
                     count[i] <= i;
                     negcount[i] <= 0;
+                    ansX <= tempX[i]
+                    ansY <= tempY[i];
+                    i <= i + 1;
                 end
                 ix <= 0;
                 jx <= 0;
                 kx <= 0;
 
-
             end
-            default://不知該放甚麼??
+            default://不知該放甚麼??   state <= 1;
         endcase
+    end
+end
+
+always@(posedge clk or posedge reset)
+begin
+    if(reset)
+    begin
+        out_valid <= 0;
     end
 end
 
