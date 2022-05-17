@@ -36,8 +36,7 @@ module lab8(input clk,
             $dumpvars(1, inX[i], inY[i], tempX[i], tempY[i], count[i]);
     end
 
-    always@(posedge clk or posedge reset) 
-    begin
+    always@(posedge clk or posedge reset) begin
         /*系統 reset 時，圍籬系統應將 out_valid 設為 low*/
         if (reset) begin    // 初始化
             out_valid <= 0;
