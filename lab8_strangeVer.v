@@ -139,8 +139,8 @@ always@(posedge clk or posedge reset) begin
                     ix <= 0;
                     jx <= 0;
                     kx <= 0;
-                    // ansX <= 0;
-                    // ansY <= 0;
+                    ansX <= 0;
+                    ansY <= 0;
                 end else if (out_valid) begin
                     ansX <= tempX[ix];
                     ansY <= tempY[ix];
