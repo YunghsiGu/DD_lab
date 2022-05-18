@@ -1,7 +1,7 @@
 /**
  *
- * @author : 409410037, 409410100
- * @latest change : 2022/5/18 21:05
+ * @author : 409410037 古詠熙, 409410100 徐佳琪
+ * @latest change : 2022/5/18 22:08
  */
 
 `define length 6
@@ -123,142 +123,136 @@ always@(posedge clk or posedge reset) begin
                 tempX[0] <= inX[0];
                 tempY[0] <= inY[0];
                 // 把結果存回 tempX, tempY
-                i = 0;
-                case (negcount[i])
+                case (negcount[0])
                     4'd0:begin
-                        tempX[1] <= inX[i];
-                        tempY[1] <= inY[i];
+                        tempX[1] <= inX[0];
+                        tempY[1] <= inY[0];
                     end
                     4'd1:begin
-                        tempX[2] <= inX[i];
-                        tempY[2] <= inY[i];
+                        tempX[2] <= inX[0];
+                        tempY[2] <= inY[0];
                     end
                     4'd2:begin
-                        tempX[3] <= inX[i];
-                        tempY[3] <= inY[i];
+                        tempX[3] <= inX[0];
+                        tempY[3] <= inY[0];
                     end
                     4'd3:begin
-                        tempX[4] <= inX[i];
-                        tempY[4] <= inY[i];
+                        tempX[4] <= inX[0];
+                        tempY[4] <= inY[0];
                     end
                     4'd4:begin
-                        tempX[5] <= inX[i];
-                        tempY[5] <= inY[i];
+                        tempX[5] <= inX[0];
+                        tempY[5] <= inY[0];
                     end
                 endcase
-                i = 1;
-                case (negcount[i])
+                case (negcount[1])
                     4'd0:begin
-                        tempX[1] <= inX[i];
-                        tempY[1] <= inY[i];
+                        tempX[1] <= inX[1];
+                        tempY[1] <= inY[1];
                     end
                     4'd1:begin
-                        tempX[2] <= inX[i];
-                        tempY[2] <= inY[i];
+                        tempX[2] <= inX[1];
+                        tempY[2] <= inY[1];
                     end
                     4'd2:begin
-                        tempX[3] <= inX[i];
-                        tempY[3] <= inY[i];
+                        tempX[3] <= inX[1];
+                        tempY[3] <= inY[1];
                     end
                     4'd3:begin
-                        tempX[4] <= inX[i];
-                        tempY[4] <= inY[i];
+                        tempX[4] <= inX[1];
+                        tempY[4] <= inY[1];
                     end
                     4'd4:begin
-                        tempX[5] <= inX[i];
-                        tempY[5] <= inY[i];
+                        tempX[5] <= inX[1];
+                        tempY[5] <= inY[1];
                     end
                 endcase
-                i = 2;
-                case (negcount[i])
+                case (negcount[2])
                     4'd0:begin
-                        tempX[1] <= inX[i];
-                        tempY[1] <= inY[i];
+                        tempX[1] <= inX[2];
+                        tempY[1] <= inY[2];
                     end
                     4'd1:begin
-                        tempX[2] <= inX[i];
-                        tempY[2] <= inY[i];
+                        tempX[2] <= inX[2];
+                        tempY[2] <= inY[2];
                     end
                     4'd2:begin
-                        tempX[3] <= inX[i];
-                        tempY[3] <= inY[i];
+                        tempX[3] <= inX[2];
+                        tempY[3] <= inY[2];
                     end
                     4'd3:begin
-                        tempX[4] <= inX[i];
-                        tempY[4] <= inY[i];
+                        tempX[4] <= inX[2];
+                        tempY[4] <= inY[2];
                     end
                     4'd4:begin
-                        tempX[5] <= inX[i];
-                        tempY[5] <= inY[i];
+                        tempX[5] <= inX[2];
+                        tempY[5] <= inY[2];
                     end
                 endcase
-                i = 3;
-                case (negcount[i])
+                case (negcount[3])
                     4'd0:begin
-                        tempX[1] <= inX[i];
-                        tempY[1] <= inY[i];
+                        tempX[1] <= inX[3];
+                        tempY[1] <= inY[3];
                     end
                     4'd1:begin
-                        tempX[2] <= inX[i];
-                        tempY[2] <= inY[i];
+                        tempX[2] <= inX[3];
+                        tempY[2] <= inY[3];
                     end
                     4'd2:begin
-                        tempX[3] <= inX[i];
-                        tempY[3] <= inY[i];
+                        tempX[3] <= inX[3];
+                        tempY[3] <= inY[3];
                     end
                     4'd3:begin
-                        tempX[4] <= inX[i];
-                        tempY[4] <= inY[i];
+                        tempX[4] <= inX[3];
+                        tempY[4] <= inY[3];
                     end
                     4'd4:begin
-                        tempX[5] <= inX[i];
-                        tempY[5] <= inY[i];
+                        tempX[5] <= inX[3];
+                        tempY[5] <= inY[3];
                     end
                 endcase
-                i = 4;
-                case (negcount[i])
+                case (negcount[4])
                     4'd0:begin
-                        tempX[1] <= inX[i];
-                        tempY[1] <= inY[i];
+                        tempX[1] <= inX[4];
+                        tempY[1] <= inY[4];
                     end
                     4'd1:begin
-                        tempX[2] <= inX[i];
-                        tempY[2] <= inY[i];
+                        tempX[2] <= inX[4];
+                        tempY[2] <= inY[4];
                     end
                     4'd2:begin
-                        tempX[3] <= inX[i];
-                        tempY[3] <= inY[i];
+                        tempX[3] <= inX[4];
+                        tempY[3] <= inY[4];
                     end
                     4'd3:begin
-                        tempX[4] <= inX[i];
-                        tempY[4] <= inY[i];
+                        tempX[4] <= inX[4];
+                        tempY[4] <= inY[4];
                     end
                     4'd4:begin
-                        tempX[5] <= inX[i];
-                        tempY[5] <= inY[i];
+                        tempX[5] <= inX[4];
+                        tempY[5] <= inY[4];
                     end
                 endcase
-                i = 5;
-                case (negcount[i])
+                case (negcount[5])
                     4'd0:begin
-                        tempX[1] <= inX[i];
-                        tempY[1] <= inY[i];
+                        tempX[1] <= inX[5];
+                        tempY[1] <= inY[5];
                     end
                     4'd1:begin
-                        tempX[2] <= inX[i];
-                        tempY[2] <= inY[i];
+                        tempX[2] <= inX[5];
+                        tempY[2] <= inY[5];
                     end
                     4'd2:begin
-                        tempX[3] <= inX[i];
-                        tempY[3] <= inY[i];
+                        tempX[3] <= inX[5];
+                        tempY[3] <= inY[5];
                     end
                     4'd3:begin
-                        tempX[4] <= inX[i];
-                        tempY[4] <= inY[i];
+                        tempX[4] <= inX[5];
+                        tempY[4] <= inY[5];
                     end
                     4'd4:begin
-                        tempX[5] <= inX[i];
-                        tempY[5] <= inY[i];
+                        tempX[5] <= inX[5];
+                        tempY[5] <= inY[5];
                     end
                 endcase
             end
@@ -273,48 +267,42 @@ always@(posedge clk or posedge reset) begin
                     default:begin
                         if (ix == `length) begin 
                             state <= 1;
-                            i = 0;
-                            inX[i] <= 0;
-                            inY[i] <= 0;
-                            tempX[i] <= 0;
-                            tempY[i] <= 0;
-                            count[i] <= i;
-                            negcount[i] <= 0;
-                            i = 1;
-                            inX[i] <= 0;
-                            inY[i] <= 0;
-                            tempX[i] <= 0;
-                            tempY[i] <= 0;
-                            count[i] <= i;
-                            negcount[i] <= 0;
-                            i = 2;
-                            inX[i] <= 0;
-                            inY[i] <= 0;
-                            tempX[i] <= 0;
-                            tempY[i] <= 0;
-                            count[i] <= i;
-                            negcount[i] <= 0;
-                            i = 3;
-                            inX[i] <= 0;
-                            inY[i] <= 0;
-                            tempX[i] <= 0;
-                            tempY[i] <= 0;
-                            count[i] <= i;
-                            negcount[i] <= 0;
-                            i = 4;
-                            inX[i] <= 0;
-                            inY[i] <= 0;
-                            tempX[i] <= 0;
-                            tempY[i] <= 0;
-                            count[i] <= i;
-                            negcount[i] <= 0;
-                            i = 5;
-                            inX[i] <= 0;
-                            inY[i] <= 0;
-                            tempX[i] <= 0;
-                            tempY[i] <= 0;
-                            count[i] <= i;
-                            negcount[i] <= 0;
+                            inX[0] <= 0;
+                            inY[0] <= 0;
+                            tempX[0] <= 0;
+                            tempY[0] <= 0;
+                            count[0] <= i;
+                            negcount[0] <= 0;
+                            inX[1] <= 0;
+                            inY[1] <= 0;
+                            tempX[1] <= 0;
+                            tempY[1] <= 0;
+                            count[1] <= i;
+                            negcount[1] <= 0;
+                            inX[2] <= 0;
+                            inY[2] <= 0;
+                            tempX[2] <= 0;
+                            tempY[2] <= 0;
+                            count[2] <= i;
+                            negcount[2] <= 0;
+                            inX[3] <= 0;
+                            inY[3] <= 0;
+                            tempX[3] <= 0;
+                            tempY[3] <= 0;
+                            count[3] <= i;
+                            negcount[3] <= 0;
+                            inX[4] <= 0;
+                            inY[4] <= 0;
+                            tempX[4] <= 0;
+                            tempY[4] <= 0;
+                            count[4] <= i;
+                            negcount[4] <= 0;
+                            inX[5] <= 0;
+                            inY[5] <= 0;
+                            tempX[5] <= 0;
+                            tempY[5] <= 0;
+                            count[5] <= i;
+                            negcount[5] <= 0;
                             num <= 0;
                             ix <= 0;
                             jx <= 0;
