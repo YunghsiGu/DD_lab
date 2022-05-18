@@ -19,7 +19,7 @@ integer i;
 reg [7:0]inX[0:`length - 1];          // store input
 reg [7:0]inY[0:`length - 1];
 reg [7:0]negcount[0:`length - 1];     // 逆時針方向排序
-reg signed [7:0]tempX[0:`length - 1]; // store output
+reg signed [7:0]tempX[0:`length - 1]; // 向量長度
 reg signed [7:0]tempY[0:`length - 1];
 
 reg [3:0]count[0:`length - 1];
@@ -111,16 +111,36 @@ always@(posedge clk or posedge reset) begin
                     // 0,1 1,1 2,1 3,1 4,1 5,1...
 
                 if ((tempX[kx] * tempY[jx] - tempX[jx] * tempY[kx]) < 0)    // 算出來的 z 軸方向
-                    negcount[kx] <= negcount[kx] + 1;                   
+                    negcount[kx] <= negcount[kx] + 1;   // 有幾個向量在他的逆時針方向                   
             end
             4'd4:begin      // S4_sort the position of vectors(bubble sort)
                 out_valid <= 0;
                 state <= 5;
-                for (i = 0; i < `length - 1; i = i + 1) begin   // swap
-                    tempX[i]     <= (negcount[i] > negcount[i + 1]) ? tempX[i + 1] : tempX[i];
-                    tempX[i + 1] <= (negcount[i] > negcount[i + 1]) ? tempX[i] : tempX[i + 1];
-                    tempY[i]     <= (negcount[i] > negcount[i + 1]) ? tempY[i + 1] : tempY[i];
-                    tempY[i + 1] <= (negcount[i] > negcount[i + 1]) ? tempY[i] : tempY[i + 1];
+                tempX[0] <= inX[0];
+                tempY[0] <= inY[0];
+                for (i = 0; i < `length - 1; i = i + 1) begin   // 把結果存回 inX, inY
+                    case (negcount[i])
+                        4'd0:begin
+                            tempX[1] <= inX[1];
+                            tempY[1] <= inY[1];
+                        end
+                        4'd1:begin
+                            tempX[2] <= inX[2];
+                            tempY[2] <= inY[2];
+                        end
+                        4'd2:begin
+                            tempX[3] <= inX[3];
+                            tempY[3] <= inY[3];
+                        end
+                        4'd3:begin
+                            tempX[4] <= inX[4];
+                            tempY[4] <= inY[4];
+                        end
+                        4'd4:begin
+                            tempX[5] <= inX[1];
+                            tempY[5] <= inY[1];
+                        end
+                    endcase
                 end
             end
             /* 每次輸出結果後，將 out_valid 再復歸為 low */
@@ -147,6 +167,7 @@ always@(posedge clk or posedge reset) begin
                     ix <= ix + 1;
                 end
             end
+            // default://不知該放甚麼??   state <= 1;
         endcase
     end
 end
