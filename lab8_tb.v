@@ -102,6 +102,7 @@ initial begin
         while(charcount > `empty && getdata) begin
             if(line == "end\n")             getdata = `empty;
             else if(line == "input\n")      inout_flag = `in;
+                $display("%d %d",);
             else if(line == "output\n")     inout_flag = `out;
             else if(inout_flag == `in)
             begin
