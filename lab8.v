@@ -110,17 +110,20 @@ module lab8(input clk,
                 end
                 4'd4:begin      // S4_sort the position of vectors(bubble sort)
                     out_valid <= 0;
-                    if (jx == `length-1) begin 
-                        if(kx == `length-jx-1) state <= 5; 
-                        else begin
-                            tempX[kx] <= (negcount[kx] > negcount[kx + 1]) ? tempX[kx + 1] : tempX[kx];
-                            tempX[kx + 1] <= (negcount[kx] > negcount[kx + 1]) ? tempX[kx] : tempX[kx + 1];
-                            tempY[kx] <= (negcount[kx] > negcount[kx + 1]) ? tempY[kx + 1] : tempY[kx];
-                            tempY[kx + 1] <= (negcount[kx] > negcount[kx + 1]) ? tempY[kx] : tempY[kx + 1];
-                        end
+                     if (jx == `length-1) begin      //比到第5個接收器 
+                        if(kx == `length-1) state <= 5; 
+                        else                kx <= kx+1;
                         jx <= 0;
                     end else
                         jx <= jx+1;
+                        
+                    if (negcount[kx] > negcount[kx + 1]) begin
+                        tempX[kx] <= tempX[kx + 1];
+                        tempX[kx + 1] <= tempX[kx];
+                        tempY[kx] <= tempY[kx + 1];
+                        tempY[kx + 1] <= tempY[kx];
+                        kx <= kx+1;
+                    end
                 end
                 /*每次輸出結果後，將 out_valid 再復歸為 low*/
                 4'd5:begin      // output answer and back to initial state
