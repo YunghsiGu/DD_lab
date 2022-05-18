@@ -110,19 +110,18 @@ module lab8(input clk,
                 end
                 4'd4:begin      // S4_sort the position of vectors(bubble sort)
                     out_valid <= 0;
-                     if (jx == `length-1) begin      //比到第5個接收器 
+                    if (jx == `length-1) begin      //雙層迴圈
                         if(kx == `length-1) state <= 5; 
                         else                kx <= kx+1;
                         jx <= 0;
                     end else
                         jx <= jx+1;
-                        
-                    if (negcount[kx] > negcount[kx + 1]) begin
-                        tempX[kx] <= tempX[kx + 1];
-                        tempX[kx + 1] <= tempX[kx];
-                        tempY[kx] <= tempY[kx + 1];
-                        tempY[kx + 1] <= tempY[kx];
-                        kx <= kx+1;
+
+                    if (negcount[jx] > negcount[jx + 1]) begin//swap
+                        tempX[jx] <= tempX[jx + 1];
+                        tempX[jx + 1] <= tempX[jx];
+                        tempY[jx] <= tempY[jx + 1];
+                        tempY[jx + 1] <= tempY[jx];
                     end
                 end
                 /*每次輸出結果後，將 out_valid 再復歸為 low*/
