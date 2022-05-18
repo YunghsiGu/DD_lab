@@ -22,8 +22,9 @@ reg [7:0]negcount[0:`length - 1];     // 逆時針方向排序
 reg signed [7:0]tempX[0:`length - 1]; // 向量長度
 reg signed [7:0]tempY[0:`length - 1];
 
-reg [3:0]count;  // 第幾次輸出
+reg [3:0]count[0:`length - 1];
 
+reg [3:0]num;
 reg [3:0]state;
 reg [7:0]ix;                        // 紀錄輸第幾筆資料
 reg [7:0]jx;
@@ -46,9 +47,10 @@ always@(posedge clk or posedge reset) begin
             inY[i] <= 0;
             tempX[i] <= 0;
             tempY[i] <= 0;
+            count[i] <= i;
             negcount[i] <= 0;   // 順時針有幾個人
         end
-        count <= 0;
+        num <= 0;
         ix <= 0;    
         jx <= 0;
         kx <= 0;
@@ -62,9 +64,10 @@ always@(posedge clk or posedge reset) begin
                     inY[i] <= 0;
                     tempX[i] <= 0;
                     tempY[i] <= 0;
+                    count[i] <= i;
                     negcount[i] <= 0;
                 end
-                count <= 0;
+                num <= 0;
                 ix <= 0;
                 jx <= 0;
                 kx <= 0;
@@ -145,12 +148,12 @@ always@(posedge clk or posedge reset) begin
                 end
             end
             4'd5:begin      // output answer and back to initial state
-                case (count)
+                case (num)
                     4'd0:begin
-                        count <= count + 1;
+                        num <= num + 1;
                     end
-                    4'd1:begin
-                        count <= count + 1;
+						  4'd1:begin
+                        num <= num + 1;
                     end
                     default:begin
                         if (ix == `length) begin 
@@ -160,9 +163,10 @@ always@(posedge clk or posedge reset) begin
                                 inY[i] <= 0;
                                 tempX[i] <= 0;
                                 tempY[i] <= 0;
+                                count[i] <= i;
                                 negcount[i] <= 0;
                             end
-                            count <= i;
+                            num <= i;
                             ix <= 0;
                             jx <= 0;
                             kx <= 0;
