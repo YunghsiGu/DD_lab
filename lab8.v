@@ -138,7 +138,6 @@ module lab8(input clk,
                     jx <= 0;
                     kx <= 0;
                 end
-                //default://不知該放甚麼??   state <= 1;
             endcase
         end
     end
