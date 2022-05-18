@@ -126,9 +126,22 @@ always@(posedge clk or posedge reset) begin
             /* 每次輸出結果後，將 out_valid 再復歸為 low */
             4'd5:begin      // output answer and back to initial state
                 out_valid <= 1;
-                if (ix == `length)      
-                    state <= 0;
-                else if (out_valid) begin
+                if (ix == `length) begin 
+                    state <= 1;
+                    for (i = 0; i < `length; i = i + 1) begin
+                        inX[i] <= 0;
+                        inY[i] <= 0;
+                        tempX[i] <= 0;
+                        tempY[i] <= 0;
+                        count[i] <= i;
+                        negcount[i] <= 0;
+                    end
+                    ix <= 0;
+                    jx <= 0;
+                    kx <= 0;
+                    ansX <= 0;
+                    ansY <= 0;
+                end else if (out_valid) begin
                     ansX <= tempX[ix];
                     ansY <= tempY[ix];
                     ix <= ix + 1;
