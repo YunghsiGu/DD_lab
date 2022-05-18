@@ -167,7 +167,6 @@ always@(posedge clk or posedge reset) begin
                     ix <= ix + 1;
                 end
             end
-            // default://不知該放甚麼??   state <= 1;
         endcase
     end
 end
