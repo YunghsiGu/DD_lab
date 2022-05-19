@@ -1,15 +1,15 @@
 /**
  *
- * @author : 409412345, 409412346
+ * @author : 409410037 古詠熙, 409410100 徐佳琪
  * @latest changed : 2022/5/8 12:34
  */
 
 module lab9(input clk,
             input reset,
             input give_valid,
-            input [13:0]Intake,
-            output reg [13:0]UpPrime,
-            output reg [13:0]LowPrime,
+            input [13:0]Intake,         // 場地可容納的人數（3 ~ 9972）
+            output reg [13:0]UpPrime,   // 大於場地可容納人數的最小質數（2 ~ 9973）
+            output reg [13:0]LowPrime,  // 小於場地可容納人數的最大質數（2 ~ 9973）
             output out_valid);
 
 initial begin
@@ -33,15 +33,11 @@ assign out_valid = lowdone & updone;
 // 3. check 0 ~ N root
 // 4. back to 2. or done
 
-always@(posedge clk or posedge reset)
-begin
-    if(reset)
-    begin
+always@(posedge clk or posedge reset) begin
+    if (reset) begin
         lowdone <= 0;
         updone <= 0;
-    end
-    else
-    begin
+    end else begin
     
     end
 end
@@ -50,12 +46,10 @@ endmodule
 
 /*==================================*/
 
-module sqrt(
-input [13:0]in,
-output reg [7:0]out);
+module sqrt(input [13:0]in,
+            output reg [7:0]out);
 
-always@(*)
-begin
+always@(*) begin
 	if ( in > 9801 ) out <=  99 ;
     else if ( in > 9604 ) out <=  98 ;
     else if ( in > 9409 ) out <=  97 ;
