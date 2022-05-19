@@ -29,12 +29,12 @@ reg lowdone;    //找到要輸出較小的質數
 assign out_valid = lowdone & updone;
 
 // 1. initial 
-// 2. N+1 or N-1(埃拉托斯特尼篩法找兩旁prime num)
-// 3. check 0 ~ N root(要找的迴圈數)
-// 4. back to 2. or done
+// 2. N+1 or N-1(找兩旁num)
+// 3. check 0 ~ N root(分別找兩旁num要篩到的最大數，再建表找質數)
+// 4. back to 2. or done(N+1 or N-1不是質數，就繼續找)
 
 always@(posedge clk or posedge reset) begin
-    if (reset) begin    // 1. initial ?
+    if (reset) begin    
         lowdone <= 0;
         updone <= 0;
     end else begin
@@ -44,10 +44,10 @@ end
 
 endmodule
 
-/*=========似乎是做得到要找的迴圈數的module==========*/
+/*=========似乎是找篩到的最大數的module==========*/
 
 module sqrt(input [13:0]in,             //輸入
-            output reg [7:0]out);       //得到要找的迴圈數
+            output reg [7:0]out);       //得到要篩到的最大數
 
 always@(*) begin    
 	if ( in > 9801 ) out <=  99 ;
