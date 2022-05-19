@@ -39,3 +39,6 @@ E.建完表
 2. N+1 or N-1(找兩旁num)
 3. check 0 ~ N root(分別找兩旁num要篩到的最大數，再建表找質數)
 4. back to 2. or done(N+1 or N-1不是質數，就繼續找)
+
+
+完蛋，這算建質數表嗎?QQ
