@@ -5,13 +5,13 @@
  */
 
 module lab9(input clk,
-                   input reset,
-                   input give_valid,
-                   input [13:0]Intake,         // 場地可容納的人數（3 ~ 9972）
-                   output reg [13:0]UpPrime,   // 大於場地可容納人數的最小質數（2 ~ 9973）
-                   output reg [13:0]LowPrime,  // 小於場地可容納人數的最大質數（2 ~ 9973）
-                   output out_valid
-                   );
+            input reset,
+            input give_valid,
+            input [13:0]Intake,         // 場地可容納的人數（3 ~ 9972）
+            output reg [13:0]UpPrime,   // 大於場地可容納人數的最小質數（2 ~ 9973）
+            output reg [13:0]LowPrime,  // 小於場地可容納人數的最大質數（2 ~ 9973）
+            output out_valid
+            );
 
 initial begin
 	$dumpfile("Lab.vcd");
