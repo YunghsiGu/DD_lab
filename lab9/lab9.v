@@ -1,7 +1,7 @@
 /**
  *
  * @author : 409410037 古詠熙, 409410100 徐佳琪
- * @latest changed : 2022/5/8 12:34
+ * @latest changed : 2022/5/20 20:35
  */
 
 module lab9(input clk,
