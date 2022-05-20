@@ -17,20 +17,23 @@ initial begin
     $dumpvars(0, lab9tb);
 end
 
+reg [1:0]build;     // 建表了沒
 reg [4:0]state;     // 用在 case
-reg [7:0]divide;    // 除數
+reg [7:0]i, j;
+reg [7:0]count;     // list 裡面有幾個質數
 reg [13:0]num;      // 接收 Intake
 reg [13:0]up, low;  // 大於的跟小於的
 wire [7:0]root;     // 樓下 sqrt 判斷好的根
 sqrt sqrt(.in(Intake), .out(root));
+reg [7:0]list[0:25];    // 100 內的質數
 
+// 大於的做完了 (0:還沒, 1:做完)
+reg updone; 
 
-reg updone; // 大於的做完了
+// 小於的做完了 (0:還沒, 1:做完)
+reg lowdone; 
 
-
-reg lowdone; // 小於的做完了
-
-assign out_valid = lowdone & updone;    // 我還沒 check
+assign out_valid = lowdone & updone;    // up 跟 low 都做完了
 
 // 1. initial 
 // 2. N+1 or N-1
@@ -43,21 +46,68 @@ always@(posedge clk or posedge reset) begin
         updone <= 0;
         state <= 0;
         give_valid <= 0;
+        count <= 0;
+        i <= 2;
+        j <= 0;
+        build <= 0;
+        list[0] <= 1;
     end else begin
         case (state)
             4'd0:begin  // 1. initial 
-                state <= 1;
+                if (build)
+                    state <= 2;
+                else begin
+                    state <= 1;
+                end
+                UpPrime <= 0;
+                LowPrime <= 0;
+                updone <= 0;
+                lowdone <= 0;
                 give_valid <= 1;
                 num <= Intake;
-                divide <= 1;
+                up <= Intake + 1;
+                low <= Intake - 1;
             end
-            4'd1:begin  // 3. check 0 ~ N root
-                state <= 2;
+            4'd1:begin  // build the list
+                if (i % list[j] == 0)
+                    i <= i + 1;
+                else if (list[j + 1] * list[j + 1] > i) begin
+                    list[count] <= i;
+                    count <= count + 1;
+                    j <= 0;
+                    if (count == 24) begin   // 找到所有質數
+                        state <= 2;
+                        i <= 0;
+                    end
+                end else
+                    j <= j + 1;
+            end
+            4'd2:begin  // 3. check 0 ~ N root
+                state <= 3;
                 give_valid <= 0;
-                if (divide * divide > )
+                // 大於的
+                if (!updone)    
+                    if (up % list[i] == 0) begin
+                        up <= up + 1;   // 2. N+1
+                    end else begin                     
+                        updone <= 1;
+                    end
+                // 小於的
+                if (!lowdone)   
+                    if (low % list[i] == 0) begin
+                        low <= low - 1; // 2. N-1
+                    end else begin
+                        lowdone <= 1;
+                    end
+                if (!(updone & lowdone))
+                    i <= i + 1;
+                else begin  // 4. back to 2. or done
+                    state <= 0;
+                    UpPrime <= up;
+                    LowPrime <= low;
+                end
             end
         endcase
-    
     end
 end
 
