@@ -1,7 +1,7 @@
 /**
  *
  * @author : 409410037 古詠熙, 409410100 徐佳琪
- * @latest changed : 2022/5/8 12:34
+ * @latest changed : 2022/5/20 01:19
  */
 
 module lab9(input clk,
@@ -21,20 +21,20 @@ wire    [7:0] root;
 sqrt sqrt(.in(Intake), .out(root));
 
 
-reg updone;
+reg updone;     //找到要輸出較大的質數
 
 
-reg lowdone;
+reg lowdone;    //找到要輸出較小的質數
 
 assign out_valid = lowdone & updone;
 
 // 1. initial 
-// 2. N+1 or N-1
-// 3. check 0 ~ N root
-// 4. back to 2. or done
+// 2. N+1 or N-1(找兩旁num)
+// 3. check 0 ~ N root(分別找兩旁num要篩到的最大數，再建表找質數)
+// 4. back to 2. or done(N+1 or N-1不是質數，就繼續找)
 
 always@(posedge clk or posedge reset) begin
-    if (reset) begin
+    if (reset) begin    
         lowdone <= 0;
         updone <= 0;
     end else begin
@@ -44,12 +44,12 @@ end
 
 endmodule
 
-/*==================================*/
+/*=========似乎是找篩到的最大數的module==========*/
 
-module sqrt(input [13:0]in,
-            output reg [7:0]out);
+module sqrt(input [13:0]in,             //輸入
+            output reg [7:0]out);       //得到要篩到的最大數
 
-always@(*) begin
+always@(*) begin    
 	if ( in > 9801 ) out <=  99 ;
     else if ( in > 9604 ) out <=  98 ;
     else if ( in > 9409 ) out <=  97 ;
