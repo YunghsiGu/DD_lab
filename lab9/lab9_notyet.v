@@ -10,7 +10,11 @@ module lab9_notyet(input clk,
                    input [13:0]Intake,         // 場地可容納的人數（3 ~ 9972）
                    output reg [13:0]UpPrime,   // 大於場地可容納人數的最小質數（2 ~ 9973）
                    output reg [13:0]LowPrime,  // 小於場地可容納人數的最大質數（2 ~ 9973）
-                   output out_valid);
+                   output out_valid,
+                   output [4:0]debug,
+                   output [7:0]debug_i,
+                   output [7:0]debug_j,
+                   output [7:0]debug_L0);
 
 initial begin
 	$dumpfile("Lab.vcd");
@@ -34,6 +38,10 @@ reg updone;
 reg lowdone; 
 
 assign out_valid = lowdone & updone;    // up 跟 low 都做完了
+assign debug = state;
+assign debug_i = i;
+assign debug_j = j;
+assign debug_L0 = list[0];
 
 // 1. initial 
 // 2. N+1 or N-1
@@ -49,7 +57,7 @@ always@(posedge clk or posedge reset) begin
 		i <= 2;
 		j <= 0;
 		build <= 0;
-		list[0] <= 1;
+		list[0] <= 10;
 	end else begin
 		case (state)
 			4'd0:begin  // 1. initial 
@@ -69,21 +77,21 @@ always@(posedge clk or posedge reset) begin
 				end
 			end
 			4'd1:begin  // build the list
-				if (i % list[j] == 0)
-					i <= i + 1;
-				else if (list[j + 1] * list[j + 1] > i) begin
+				if (list[j] * list[j] > i) begin
 					list[count] <= i;
 					count <= count + 1;
-					j <= 0;
+					i <= i + 1;
+					j <= 0;                  
 					if (count == 24) begin   // 找到所有質數
 						state <= 2;
 						i <= 0;
 					end
+				end else if (i % list[j] == 0) begin
+					i <= i + 1;
 				end else
-						j <= j + 1;
+					j <= j + 1;
 			end
 			4'd2:begin  // 3. check 0 ~ N root
-				state <= 3;
 				// 大於的
 				if (!updone)    
 					if (up % list[i] == 0) begin
@@ -98,7 +106,7 @@ always@(posedge clk or posedge reset) begin
 					end else begin
 						lowdone <= 1;
 					end
-				if (!(updone & lowdone))
+				if (!(out_valid))
 					i <= i + 1;
 				else begin  // 4. back to 2. or done
 					state <= 0;
@@ -106,7 +114,7 @@ always@(posedge clk or posedge reset) begin
 					LowPrime <= low;
 				end
 			end
-	  endcase
+		endcase
 	end
 end
 
