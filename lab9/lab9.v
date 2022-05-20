@@ -89,7 +89,7 @@ always@(posedge clk or posedge reset) begin
 					j <= 0;
 				end else
 					j <= j + 1;
-				end
+			end
 			4'd2:begin  // 3. check 0 ~ N root
 				// 大於的
 				if (!updone) 
