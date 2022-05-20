@@ -43,7 +43,7 @@ assign out_valid = lowdone & updone;    // up 跟 low 都做完了
 
 always@(posedge clk or posedge reset) begin
 	if (reset) begin
-        UpPrime <= 0;
+		UpPrime <= 0;
 		LowPrime <= 0;
 		lowdone <= 0;
 		updone <= 0;
@@ -64,13 +64,13 @@ always@(posedge clk or posedge reset) begin
 					num <= Intake;
 					up <= Intake + 1;
 					low <= Intake - 1;
-                    if (build) begin
-                        state <= 2;
-                        i <= 0;
-                        j <= 0;
-                    end else begin
-                        state <= 1;
-				    end
+					if (build) begin
+						state <= 2;
+						i <= 0;
+						j <= 0;
+					end else begin
+						state <= 1;
+					end
 				end
 			end
 			4'd1:begin  // build the list
@@ -82,41 +82,41 @@ always@(posedge clk or posedge reset) begin
 					if (count == 24) begin   // 找到所有質數
 						state <= 2;
 						i <= 0;
-                        build <= 1;
+						build <= 1;
 					end
 				end else if (i % list[j] == 0) begin
 					i <= i + 1;
-                    j <= 0;
+					j <= 0;
 				end else
 					j <= j + 1;
-			end
+				end
 			4'd2:begin  // 3. check 0 ~ N root
 				// 大於的
 				if (!updone) 
-                    if (list[i] * list[i] > up) begin
-                        updone <= 1;  
-                        UpPrime <= up;                   
-                    end else if (up % list[i] == 0) begin
+					if (list[i] * list[i] > up) begin
+						updone <= 1;  
+						UpPrime <= up;                   
+					end else if (up % list[i] == 0) begin
 						up <= up + 1;   // 2. N+1
-                        i <= 0;
-                    end else begin
-                        i <= i + 1;
-                    end
+						i <= 0;
+					end else begin
+						i <= i + 1;
+					end
 				// 小於的
 				if (!lowdone)   
-                    if (list[j] * list[j] > low) begin
-                        lowdone <= 1;   
-                        LowPrime <= low;  
-                    end else if (low % list[j] == 0) begin
+					if (list[j] * list[j] > low) begin
+						lowdone <= 1;   
+						LowPrime <= low;  
+					end else if (low % list[j] == 0) begin
 						low <= low - 1; // 2. N-1
-                        j <= 0;
-                    end else begin
-                        j <= j + 1;
-                    end
+						j <= 0;
+					end else begin
+						j <= j + 1;
+					end
 				if (out_valid) begin  // 4. back to 2. or done
 					state <= 0;
-                    i <= 0;
-                    j <= 0;
+					i <= 0;
+					j <= 0;
 					UpPrime <= up;
 					LowPrime <= low;
 				end
