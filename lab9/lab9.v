@@ -92,12 +92,13 @@ always@(posedge clk or posedge reset) begin
 				// 大於的
 				if (!updone) begin 
 					if (list[i] * list[i] > up) begin
-						updone <= 1;  
-						UpPrime <= up;  
-						if (LowPrime) begin  // 4. back to 2. or done
+						updone <= 1;  						  
+						if (lowdone) begin  // 4. back to 2. or done
 						    state <= 0;
 						    i <= 0;
 						    j <= 0;
+							LowPrime <= low;
+							UpPrime <= up;
 						end                 
 					end else if (up % list[i] == 0) begin
 						up <= up + 1;   // 2. N+1
@@ -109,12 +110,13 @@ always@(posedge clk or posedge reset) begin
 				// 小於的
 				if (!lowdone) begin
 					if (list[j] * list[j] > low) begin
-						lowdone <= 1;   
-						LowPrime <= low;  
-						if (UpPrime) begin  // 4. back to 2. or done
+						lowdone <= 1;   						  
+						if (updone) begin  // 4. back to 2. or done
 						    state <= 0;
 						    i <= 0;
 						    j <= 0;
+							LowPrime <= low;
+							UpPrime <= up;
 						end
 					end else if (low % list[j] == 0) begin
 						low <= low - 1; // 2. N-1
