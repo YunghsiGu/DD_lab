@@ -94,9 +94,9 @@ always@(posedge clk or posedge reset) begin
 					if (list[i] * list[i] > up) begin
 						updone <= 1;  						  
 						if (lowdone) begin  // 4. back to 2. or done
-						    state <= 0;
-						    i <= 0;
-						    j <= 0;
+							state <= 0;
+							i <= 0;
+							j <= 0;
 							LowPrime <= low;
 							UpPrime <= up;
 						end                 
@@ -112,9 +112,9 @@ always@(posedge clk or posedge reset) begin
 					if (list[j] * list[j] > low) begin
 						lowdone <= 1;   						  
 						if (updone) begin  // 4. back to 2. or done
-						    state <= 0;
-						    i <= 0;
-						    j <= 0;
+							state <= 0;
+							i <= 0;
+							j <= 0;
 							LowPrime <= low;
 							UpPrime <= up;
 						end
