@@ -54,10 +54,10 @@ always@(posedge clk or posedge reset) begin
 	end else begin
 		case (state)
 			4'd0:begin  // 1. initial 
-                UpPrime <= 0;
-                LowPrime <= 0;
-                updone <= 0;
-                lowdone <= 0;
+				UpPrime <= 0;
+				LowPrime <= 0;
+				updone <= 0;
+				lowdone <= 0;
 				if (give_valid) begin
 					num <= Intake;
 					up <= Intake + 1;
@@ -94,35 +94,35 @@ always@(posedge clk or posedge reset) begin
 					if (list[i] * list[i] > up) begin
 						updone <= 1;  
 						UpPrime <= up;  
-                        if (LowPrime) begin  // 4. back to 2. or done
-                            state <= 0;
-                            i <= 0;
-                            j <= 0;
-                        end                 
+						if (LowPrime) begin  // 4. back to 2. or done
+						    state <= 0;
+						    i <= 0;
+						    j <= 0;
+						end                 
 					end else if (up % list[i] == 0) begin
 						up <= up + 1;   // 2. N+1
 						i <= 0;
 					end else begin
 						i <= i + 1;
 					end
-                end
+				end
 				// 小於的
 				if (!lowdone) begin
 					if (list[j] * list[j] > low) begin
 						lowdone <= 1;   
 						LowPrime <= low;  
-                        if (UpPrime) begin  // 4. back to 2. or done
-                            state <= 0;
-                            i <= 0;
-                            j <= 0;
-                        end
+						if (UpPrime) begin  // 4. back to 2. or done
+						    state <= 0;
+						    i <= 0;
+						    j <= 0;
+						end
 					end else if (low % list[j] == 0) begin
 						low <= low - 1; // 2. N-1
 						j <= 0;
 					end else begin
 						j <= j + 1;
 					end
-                end
+				end
 			end
 		endcase
 	end
