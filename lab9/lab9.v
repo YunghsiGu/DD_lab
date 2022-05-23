@@ -1,7 +1,7 @@
 /**
  *
- * @author : 409410037 古詠熙, 409410100 徐佳琪
- * @latest changed : 2022/5/20 01:19
+ * @author : 409410100 徐佳琪
+ * @latest changed : 2022/5/22 18:19
  */
 
 module lab9(input clk,
@@ -19,32 +19,84 @@ end
 
 wire    [7:0] root;
 sqrt sqrt(.in(Intake), .out(root));
+reg updone;                             //找到要輸出較大的質數
+reg lowdone;                            //找到要輸出較小的質數
+assign out_valid = lowdone & updone;    //找到要輸出較大的質數 也 找到要輸出較小的質數
 
-
-reg updone;     //找到要輸出較大的質數
-
-
-reg lowdone;    //找到要輸出較小的質數
-
-assign out_valid = lowdone & updone;
+reg [3:0]state; 
+reg [13:0]A;           //N+1
+reg [13:0]B;           //N-1 
+reg [13:0]ix;           //index_i
+reg [13:0]jx;           //index_j
 
 // 1. initial 
 // 2. N+1 or N-1(找兩旁num)
-// 3. check 0 ~ N root(分別找兩旁num要篩到的最大數，再建表找質數)
+// 3. check 0 ~ N root(找質數)
 // 4. back to 2. or done(N+1 or N-1不是質數，就繼續找)
 
 always@(posedge clk or posedge reset) begin
     if (reset) begin    
-        lowdone <= 0;
+        state <= 0;
         updone <= 0;
+        lowdone <= 0;
     end else begin
-    
-    end
+        case (state)
+            4'd0:begin     // initial state & give A B
+                if (give_valid) begin
+                    A <= Intake;
+                    B <= Intake;
+                    state <= 1;
+                end
+            end
+            4'd1:begin     //  N+1 or N-1
+                if(!updone) begin
+                    A <= Intake + 1;
+                    ix <= 2;
+                    state <= 2;
+                end
+                if(!lowdone) begin
+                    B <= Intake - 1;
+                    jx <= 2;
+                    state <= 2;
+                end
+            end
+            4'd1:begin     // check 0 ~ N root
+                if(!updone) begin
+                    if (ix > root) begin                        
+                        state <= 2;
+                        UpPrime = A;
+                        updone <= 1;
+                    end else if(A % ix == 0) begin
+                        state <= 2;
+                        updone <= 0;
+                    end else ix <= ix + 1;
+                end             
+                if(!lowdone) begin
+                    if (jx > root) begin                        
+                        state <= 2;
+                        LowPrime = B;
+                        lowdone <= 1;
+                    end else if(B % jx == 0) begin
+                        state <= 2;
+                        lowdone <= 0;
+                    end else jx <= jx + 1;
+                end
+            end
+            4'd2:begin          //back to 2. or done(N+1 or N-1不是質數，就繼續找)
+                if(out_valid) begin
+                    UpPrime = A;
+                    LowPrime = B;
+                    updone <= 0;
+                    lowdone <= 0;
+                    state <= 0;
+                end else state <= 1;
+            end
+        endcase
+    end   
 end
-
 endmodule
 
-/*=========似乎是找篩到的最大數的module==========*/
+/*=========找篩到的最大數的module==========*/
 
 module sqrt(input [13:0]in,             //輸入
             output reg [7:0]out);       //得到要篩到的最大數
