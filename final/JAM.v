@@ -56,8 +56,6 @@ always @(negedge CLK or negedge RST) begin
                     end else begin
                         if (W == 7) begin
                             state <= 1;
-                            W <= 0;
-                            J <= 0;
                         end else begin
                             W <= W + 1;
                             J <= 0;
@@ -141,13 +139,12 @@ always @(negedge CLK or negedge RST) begin
             5'd4:begin  // calculate
                 state <= 5;
                 calculate_time <= calculate_time + 1;
-                result <= (num[7] * worker[num[7]] + num[6] * worker[8 + num[6]] + 
-                    num[5] * worker[16 + num[5]] + num[4] * worker[24 + num[4]] +
-                    num[3] * worker[32 + num[3]] + num[2] * worker[40 + num[2]] +
-                    num[1] * worker[48 + num[1]] + num[0] * worker[56 + num[0]]);
+                result <= (worker[num[7]] + worker[8 + num[6]] + worker[16 + num[5]] + 
+                worker[24 + num[4]] + worker[32 + num[3]] + worker[40 + num[2]] +
+                worker[48 + num[1]] + worker[56 + num[0]]);
             end
             5'd5:begin
-                if (result < min_cost) begin
+                if (result < min_cost || calculate_time == 1) begin
                     min_cost <= result;
                 end else if (result == min_cost) begin
                     match_count <= match_count + 1;
@@ -159,7 +156,7 @@ always @(negedge CLK or negedge RST) begin
                     MatchCount <= match_count;
                     Valid <= 1;
                 end else begin
-                    state <= 0;
+                    state <= 1;
                 end
             end
         endcase
@@ -167,4 +164,5 @@ always @(negedge CLK or negedge RST) begin
 end
 
 endmodule
+
 
