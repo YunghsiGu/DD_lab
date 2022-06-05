@@ -16,16 +16,35 @@ initial begin
     $dumpvars(0, testfixture);
     for (i = 0; i < 8; i = i + 1)
         $dumpvars(1, num[i]);
+    for (i = 0; i < 64; i = i + 1)
+        $dumpvars(1, worker[i]);
 end
 
 reg [5:0]state;
-reg [2:0]num[0:7];
+reg [2:0]num[0:7];      // 字典序演算法
+reg [6:0]worker[0:63];  // Cost
 
-always @(posedge CLK or posedge RST) begin
+always @(negedge CLK or negedge RST) begin
     if (RST) begin
         state <= 0;
+        W <= 0;
+        J <= 0;
     end else begin
-
+        case (state)
+            2'd0:begin  // input
+                if (W <= 7) begin
+                    worker[W * 8 + J] <= Cost;
+                    if (J < 7) begin
+                        J <= J + 1;
+                    end else begin
+                        W <= W + 1;
+                        J <= 0;
+                    end
+                end else begin
+                    state <= 1;
+                end
+            end 
+        endcase
     end
 end
 
