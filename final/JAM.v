@@ -29,7 +29,7 @@ reg [10:0]min_cost;
 reg [3:0]match_count;
 reg [16:0]calculate_time;   // 計算工作成本的次數
 
-always @(negedge CLK or negedge RST) begin
+always @(negedge CLK or posedge RST) begin
     if (RST) begin
         state <= 0;
         W <= 0;
