@@ -26,6 +26,9 @@ reg [2:0]z;
 reg [2:0]num[0:7];      // 字典序演算法; initial: [7]=0, [6]=1, [5]=2, [4]=3, [3]=4, [2]=5, [1]=6, [0]=7
 reg [6:0]worker[0:63];  // Cost
 reg [10:0]result;       // 工作成本
+reg [10:0]min_cost;
+reg [3:0]match_count;
+reg [16:0]calculate_time;   // 計算工作成本的次數
 
 always @(negedge CLK or negedge RST) begin
     if (RST) begin
@@ -33,6 +36,9 @@ always @(negedge CLK or negedge RST) begin
         W <= 0;
         J <= 0;
         replace <= 0;
+        min_cost <= 0;
+        match_count <= 1;
+        calculate_time <= 0;
         num[0] <= 7;
         num[1] <= 6;
         num[2] <= 5;
@@ -102,7 +108,28 @@ always @(negedge CLK or negedge RST) begin
                 end
             end
             5'd4:begin  // calculate
-
+                state <= 5;
+                calculate_time <= calculate_time + 1;
+                result <= (num[7] * worker[num[7]] + num[6] * worker[8 + num[6]] + 
+                    num[5] * worker[16 + num[5]] + num[4] * worker[24 + num[4]] +
+                    num[3] * worker[32 + num[3]] + num[2] * worker[40 + num[2]] +
+                    num[1] * worker[48 + num[1]] + num[0] * worker[56 + num[0]])
+            end
+            5'd5:begin
+                if (result < min_cost) begin
+                    min_cost <= result;
+                end else if (result == min_cost) begin
+                    match_count <= match_count + 1;
+                end else begin
+                    match_count <= 1;
+                end
+                if (calculate_time == 40320) begin
+                    MinCost <= min_cost;
+                    MatchCount <= match_count;
+                    Valid <= 1;
+                end else begin
+                    state <= 1;
+                end
             end
         endcase
     end
