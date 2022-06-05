@@ -9,6 +9,8 @@ output reg [9:0] MinCost,       // 輸出最小總工作成本的數值
 output reg Valid
 );
 
+integer i;
+
 initial begin
     $dumpfile("JAM.vcd");
     $dumpvars(0, testfixture);
