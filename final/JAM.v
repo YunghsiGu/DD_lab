@@ -22,8 +22,10 @@ end
 
 reg [5:0]state;
 reg [2:0]replace;       // 替換點
-reg [2:0]num[0:7];      // 字典序演算法; initial: 0, 1, 2, 3, 4, 5, 6, 7
+reg [2:0]z;
+reg [2:0]num[0:7];      // 字典序演算法; initial: [7]=0, [6]=1, [5]=2, [4]=3, [3]=4, [2]=5, [1]=6, [0]=7
 reg [6:0]worker[0:63];  // Cost
+reg [10:0]result;       // 工作成本
 
 always @(negedge CLK or negedge RST) begin
     if (RST) begin
@@ -82,6 +84,25 @@ always @(negedge CLK or negedge RST) begin
                 end else begin
                     state <= 4;
                 end
+            end
+            5'd2:begin
+                
+            end
+            5'd3:begin  // flip
+                state <= 4;
+                num[0] <= num[z - 1];
+                num[z - 1] <= num[0];
+                if ((z - 2) - 1 > 1) begin
+                    num[1] <= num[z - 2];
+                    num[z - 2] <= num[1];
+                    if (z == 7) begin
+                        num[2] <= num[4];
+                        num[4] <= num[2];                  
+                    end
+                end
+            end
+            5'd4:begin  // calculate
+
             end
         endcase
     end
