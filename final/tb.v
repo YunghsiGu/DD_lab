@@ -1,7 +1,7 @@
 `timescale 1ns/10ps
 `define CYCLE       10.0  
 `define PAT         "cost_rom"
-`define PAT_NUM     3
+`define PAT_NUM     1
 `define End_CYCLE   600000
 
 
