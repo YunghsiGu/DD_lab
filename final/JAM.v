@@ -146,10 +146,9 @@ always @(negedge CLK or negedge RST) begin
             5'd5:begin
                 if (result < min_cost || calculate_time == 1) begin
                     min_cost <= result;
+                    match_count <= 1;
                 end else if (result == min_cost) begin
                     match_count <= match_count + 1;
-                end else begin
-                    match_count <= 1;
                 end
                 if (calculate_time == 40320) begin
                     MinCost <= min_cost;
